@@ -1,0 +1,49 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+// The main method must be in a class named "Main".
+class Node{
+    int data;
+    Node next;
+
+    Node(int data){
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class Main {
+    static void printMiddle(Node head){
+        Node temp = head;
+        int count = 0;
+        while (temp!=null) {
+            count++;
+            temp = temp.next;
+        }
+        int mid = count/2;
+
+        while(mid>0){
+            head = head.next;
+            mid--;
+        }
+        System.out.print(head.data);
+    }
+    public static void main(String[] args) {
+        //System.out.println("Hello world!");
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        Node head = new Node(sc.nextInt());
+
+        Node tail = head;
+
+        for(int i=1; i<n; i++){
+            Node curr = new Node(sc.nextInt());
+
+            tail.next = curr;
+            tail = curr;
+        }
+        printMiddle(head);
+    }
+}
