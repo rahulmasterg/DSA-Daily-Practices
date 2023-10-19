@@ -1,0 +1,120 @@
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    Node head;
+
+    void add(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+    }
+
+    void set(int index, int data) {
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            if (current == null) {
+                throw new IndexOutOfBoundsException("Index: " + index);
+            }
+            current = current.next;
+        }
+        current.data = data;
+    }
+
+    int get(int index) {
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            if (current == null) {
+                throw new IndexOutOfBoundsException("Index: " + index);
+            }
+            current = current.next;
+        }
+        return current.data;
+    }
+
+    int size() {
+        int count = 0;
+        Node current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
+    }
+
+    void printList() {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+    }
+}
+
+public class Main {
+
+    public static int partition(LinkedList list, int low, int high) {
+        int pivot = list.get(high);
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (list.get(j) < pivot) {
+                i++;
+
+                int temp = list.get(i);
+                list.set(i, list.get(j));
+                list.set(j, temp);
+            }
+        }
+        // Swap with pivot
+        i++;
+        int temp = list.get(i);
+        list.set(i, list.get(high));
+        list.set(high, temp);
+
+        return i;
+    }
+
+    public static void quickSort(LinkedList list, int low, int high) {
+        if (low < high) {
+            int pi = partition(list, low, high);
+
+            quickSort(list, low, pi - 1);
+            quickSort(list, pi + 1, high);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        LinkedList linkedList = new LinkedList();
+
+        for (int i = 0; i < n; i++) {
+            linkedList.add(sc.nextInt());
+        }
+
+        quickSort(linkedList, 0, n - 1);
+
+        linkedList.printList();
+
+        sc.close();
+    }
+}
