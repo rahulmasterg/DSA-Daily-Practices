@@ -1,0 +1,68 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node{
+    int val;
+    Node next;
+
+    Node(int x){
+        this.val = x;
+        this.next = null;
+    }
+}
+
+class Main {
+    //Remove pos element from end
+    public static void removeElement(Node head, int pos){
+        Node slow = head;
+        Node fast = head;
+
+        while(pos-- > 0){
+            fast = fast.next;
+        }
+
+        if(fast==null){
+            head = head.next;
+        }
+
+        while (fast.next!=null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        slow.next = slow.next.next;
+    }
+
+    //Print List
+    public static void printList(Node head){
+        if(head==null){
+            return;
+        }
+        System.out.print(head.val+" ");
+        printList(head.next);
+    }
+
+    //Driver code
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        
+        Node head = new Node(sc.nextInt());
+        Node tail = head;
+        
+        for(int i=1; i<n; i++){
+            Node curr = new Node(sc.nextInt());
+            tail.next = curr;
+            tail = curr;
+        }
+
+        int pos = sc.nextInt();
+
+        printList(head);
+        removeElement(head, pos);
+        System.out.println();
+        printList(head);
+        
+    }
+}
