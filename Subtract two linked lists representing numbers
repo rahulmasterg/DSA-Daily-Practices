@@ -1,0 +1,90 @@
+import java.util.*;
+
+class Main {
+  public static Scanner scn = new Scanner(System.in);
+
+  public static class ListNode {
+    int val = 0;
+    ListNode next = null;
+
+    ListNode(int val) {
+      this.val = val;
+    }
+  }
+
+  public static ListNode subtractTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(-1);
+    ListNode prev = dummy;
+    ListNode current1 = l1;
+    ListNode current2 = l2;
+
+    // Reverse the input linked lists
+    current1 = reverseLinkedList(current1);
+    current2 = reverseLinkedList(current2);
+
+    int borrow = 0;
+
+    while (current1 != null || current2 != null) {
+      int x = (current1 != null) ? current1.val : 0;
+      int y = (current2 != null) ? current2.val : 0;
+
+      int diff = x - y - borrow;
+
+      if (diff < 0) {
+        diff += 10;
+        borrow = 1;
+      } else {
+        borrow = 0;
+      }
+
+      prev.next = new ListNode(diff);
+      prev = prev.next;
+
+      if (current1 != null) current1 = current1.next;
+      if (current2 != null) current2 = current2.next;
+    }
+
+    // Reverse the result linked list
+    return reverseLinkedList(dummy.next);
+  }
+
+  public static ListNode reverseLinkedList(ListNode head) {
+    ListNode prev = null;
+    ListNode current = head;
+    while (current != null) {
+      ListNode next = current.next;
+      current.next = prev;
+      prev = current;
+      current = next;
+    }
+    return prev;
+  }
+
+  // Input_code===================================================
+
+  public static void printList(ListNode node) {
+    while (node != null) {
+      System.out.print(node.val + " ");
+      node = node.next;
+    }
+  }
+
+  public static ListNode makeList(int n) {
+    ListNode dummy = new ListNode(-1);
+    ListNode prev = dummy;
+    while (n-- > 0) {
+      prev.next = new ListNode(scn.nextInt());
+      prev = prev.next;
+    }
+
+    return dummy.next;
+  }
+
+  public static void main(String[] args) {
+    ListNode head1 = makeList(scn.nextInt());
+    ListNode head2 = makeList(scn.nextInt());
+
+    ListNode ans = subtractTwoNumbers(head1, head2);
+    printList(ans);
+  }
+}
